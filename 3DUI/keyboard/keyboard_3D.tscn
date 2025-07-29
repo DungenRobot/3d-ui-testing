@@ -1,0 +1,148 @@
+[gd_scene load_steps=15 format=3 uid="uid://br4kmla2g6p4q"]
+
+[ext_resource type="Script" uid="uid://gybsp84jgc8f" path="res://3DUI/keyboard/keyboard_3d.gd" id="1_kgtfu"]
+[ext_resource type="PackedScene" uid="uid://cqjewtw3dwb50" path="res://3DUI/keyboard/keyboard_2D.tscn" id="2_xvdgb"]
+[ext_resource type="Texture2D" uid="uid://b7cjhw7014v0m" path="res://3DUI/keyboard/backing.png" id="3_cjoov"]
+[ext_resource type="PackedScene" uid="uid://crsnsljxylber" path="res://3DUI/curve.blend" id="3_m8mf6"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_cjoov"]
+resource_local_to_scene = true
+size = Vector2(3, 1)
+orientation = 2
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_m8mf6"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_psktx"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_m8mf6")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_bhpoy"]
+blend_mode = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rfmgw"]
+bg_color = Color(0.211765, 0.211765, 0.211765, 0.921569)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+anti_aliasing_size = 0.648
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i3n24"]
+transparency = 1
+albedo_color = Color(0.205117, 0.205117, 0.205117, 0.917647)
+albedo_texture = ExtResource("3_cjoov")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_m8mf6"]
+top_radius = 0.01
+bottom_radius = 0.01
+height = 0.845
+radial_segments = 8
+rings = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dselc"]
+shading_mode = 0
+albedo_color = Color(0.431373, 0.431373, 0.431373, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qstjj"]
+render_priority = 4
+depth_draw_mode = 2
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(0.431373, 0.431373, 0.431373, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cjoov"]
+top_radius = 0.01
+bottom_radius = 0.01
+height = 2.86
+radial_segments = 8
+
+[node name="Keyboard3D" type="MeshInstance3D"]
+mesh = SubResource("PlaneMesh_cjoov")
+surface_material_override/0 = SubResource("StandardMaterial3D_psktx")
+script = ExtResource("1_kgtfu")
+disable_override = true
+res_scale = 203.0
+width = 3.0
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(546, 203)
+
+[node name="Control" type="Panel" parent="SubViewport"]
+material = SubResource("CanvasItemMaterial_bhpoy")
+custom_minimum_size = Vector2(544, 200)
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 545.0
+offset_bottom = 201.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rfmgw")
+
+[node name="CenterContainer" type="CenterContainer" parent="SubViewport/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Keyboard2D" parent="SubViewport/Control/CenterContainer" instance=ExtResource("2_xvdgb")]
+layout_mode = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_cjoov")
+surface_material_override/0 = SubResource("StandardMaterial3D_i3n24")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.49711, 0, 0)
+mesh = SubResource("CylinderMesh_m8mf6")
+surface_material_override/0 = SubResource("StandardMaterial3D_dselc")
+
+[node name="curve" parent="MeshInstance3D2" instance=ExtResource("3_m8mf6")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 8.22544e-05, 0.422006, 3.96556e-09)
+
+[node name="Torus" parent="MeshInstance3D2/curve" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_qstjj")
+
+[node name="curve2" parent="MeshInstance3D2" instance=ExtResource("3_m8mf6")]
+transform = Transform3D(4.37114e-08, 3.82137e-15, 1, 8.74228e-08, -1, 0, 1, 8.74228e-08, -4.37114e-08, 0, -0.422, 0)
+
+[node name="Torus" parent="MeshInstance3D2/curve2" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_qstjj")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -1.497, 0, 0)
+mesh = SubResource("CylinderMesh_m8mf6")
+surface_material_override/0 = SubResource("StandardMaterial3D_dselc")
+
+[node name="curve" parent="MeshInstance3D3" instance=ExtResource("3_m8mf6")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 8.22544e-05, 0.422006, 3.96556e-09)
+
+[node name="Torus" parent="MeshInstance3D3/curve" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_qstjj")
+
+[node name="curve2" parent="MeshInstance3D3" instance=ExtResource("3_m8mf6")]
+transform = Transform3D(4.37114e-08, 3.82137e-15, 1, 8.74228e-08, -1, 0, 1, 8.74228e-08, -4.37114e-08, 0, -0.422, 0)
+
+[node name="Torus" parent="MeshInstance3D3/curve2" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_qstjj")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, -0.492, 0)
+mesh = SubResource("CylinderMesh_cjoov")
+surface_material_override/0 = SubResource("StandardMaterial3D_dselc")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.492, 0)
+mesh = SubResource("CylinderMesh_cjoov")
+surface_material_override/0 = SubResource("StandardMaterial3D_dselc")
+
+[editable path="MeshInstance3D2/curve"]
+[editable path="MeshInstance3D2/curve2"]
+[editable path="MeshInstance3D3/curve"]
+[editable path="MeshInstance3D3/curve2"]

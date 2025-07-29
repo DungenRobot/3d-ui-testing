@@ -1,0 +1,72 @@
+[gd_scene load_steps=12 format=3 uid="uid://b1voawjdakah2"]
+
+[ext_resource type="Script" uid="uid://cvfy3bswd6yp0" path="res://3DUI/ui_panel/panel_script.gd" id="1_5sbaq"]
+[ext_resource type="PackedScene" uid="uid://br4kmla2g6p4q" path="res://3DUI/keyboard/keyboard_3D.tscn" id="3_5sbaq"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_jkyk3"]
+resource_local_to_scene = true
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_b8h2n"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5sbaq"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_b8h2n")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jkyk3"]
+albedo_color = Color(0.0885599, 0.0885599, 0.0885599, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8wly3"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v28ap"]
+resource_local_to_scene = true
+render_priority = 1
+transparency = 1
+depth_draw_mode = 2
+no_depth_test = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_8wly3")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_l186g"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_v28ap")
+size = Vector2(3, 1)
+orientation = 2
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_6r628"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l186g"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_6r628")
+
+[node name="UIPanel" type="MeshInstance3D"]
+layers = 8
+mesh = SubResource("QuadMesh_jkyk3")
+surface_material_override/0 = SubResource("StandardMaterial3D_5sbaq")
+script = ExtResource("1_5sbaq")
+metadata/_custom_type_script = "uid://b0388ktsf41me"
+
+[node name="Back" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+mesh = SubResource("QuadMesh_jkyk3")
+surface_material_override/0 = SubResource("StandardMaterial3D_jkyk3")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+gui_embed_subwindows = true
+size = Vector2i(300, 300)
+render_target_update_mode = 4
+
+[node name="Keyboard3D" parent="." instance=ExtResource("3_5sbaq")]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, -1.10034, 0.808819)
+mesh = SubResource("PlaneMesh_l186g")
+surface_material_override/0 = SubResource("StandardMaterial3D_l186g")
+
+[connection signal="KeyInput" from="Keyboard3D" to="." method="_on_keyboard_3d_key_input"]

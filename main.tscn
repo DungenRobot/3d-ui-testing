@@ -1,0 +1,86 @@
+[gd_scene load_steps=12 format=3 uid="uid://brloeo0a34tcp"]
+
+[ext_resource type="PackedScene" uid="uid://b1voawjdakah2" path="res://3DUI/ui_panel/ui_panel.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://javlbfu5p4cs" path="res://UIExample.tscn" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://d25hscopti2dj" path="res://3DUI/pointer.gd" id="3_h2yge"]
+[ext_resource type="Texture2D" uid="uid://kifdfuurbx0x" path="res://icon.svg" id="4_1bvp3"]
+
+[sub_resource type="GDScript" id="GDScript_1bvp3"]
+script/source = "extends Node3D
+
+var xr_interface: XRInterface
+
+func _ready():
+	xr_interface = XRServer.find_interface(\"OpenXR\")
+	if xr_interface and xr_interface.is_initialized():
+		print(\"OpenXR initialized successfully\")
+
+		# Turn off v-sync!
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+
+		# Change our main viewport to output to the HMD
+		get_viewport().use_xr = true
+	else:
+		print(\"OpenXR not initialized, please check if your headset is connected\")
+"
+
+[sub_resource type="QuadMesh" id="QuadMesh_0xm2m"]
+resource_local_to_scene = true
+size = Vector2(2.6, 1.615)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_h2yge"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1bvp3"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_h2yge")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1bvp3"]
+
+[sub_resource type="Sky" id="Sky_lquwl"]
+sky_material = SubResource("ProceduralSkyMaterial_1bvp3")
+
+[sub_resource type="Environment" id="Environment_7mycd"]
+background_mode = 2
+sky = SubResource("Sky_lquwl")
+
+[node name="Main" type="Node3D"]
+script = SubResource("GDScript_1bvp3")
+
+[node name="UIPanel" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(0.60109, 0, 0.799181, 0, 1, 0, -0.799181, 0, 0.60109, -1.92186, 2.04872, -1.48561)
+mesh = SubResource("QuadMesh_0xm2m")
+surface_material_override/0 = SubResource("StandardMaterial3D_1bvp3")
+ui_scene = ExtResource("2_0xm2m")
+res_scale = 389.083
+width = 2.6
+height = 1.615
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+current = true
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(0.426016, 0, 0.904716, 0, 1, 0, -0.904716, 0, 0.426016, 0, 1.15001, 0)
+current = true
+
+[node name="XRController3D" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+pose = &"aim"
+show_when_tracked = true
+
+[node name="RayCast3D" type="RayCast3D" parent="XROrigin3D/XRController3D" node_paths=PackedStringArray("cursor")]
+script = ExtResource("3_h2yge")
+cursor = NodePath("Sprite3D")
+
+[node name="Sprite3D" type="Sprite3D" parent="XROrigin3D/XRController3D/RayCast3D"]
+pixel_size = 0.001
+billboard = 1
+no_depth_test = true
+texture = ExtResource("4_1bvp3")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7mycd")

@@ -1,0 +1,30 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="3D UI Testing"
+run/main_scene="uid://brloeo0a34tcp"
+config/features=PackedStringArray("4.4", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[autoload]
+
+InputManager="*res://InputManager/input_manager.gd"
+
+[rendering]
+
+renderer/rendering_method="mobile"
+
+[xr]
+
+openxr/enabled=true
+openxr/default_action_map="uid://cc3njt67bjjhx"
+shaders/enabled=true
