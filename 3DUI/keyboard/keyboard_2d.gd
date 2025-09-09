@@ -97,6 +97,10 @@ func key_button_down(button: Button):
 	var event = InputEventKey.new()
 	
 	event.keycode = keycode
+	if shift_pressed:
+		event.unicode = event.as_text_keycode().unicode_at(0)
+	else:
+		event.unicode = event.as_text_keycode().to_lower().unicode_at(0)
 	event.shift_pressed = shift_pressed
 	event.pressed = true
 	KeyPressed.emit(event)

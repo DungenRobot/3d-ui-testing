@@ -119,24 +119,25 @@ func push_mouse_input(new_pos: Vector2):
 		
 		var event_push = InputEventMouseButton.new()
 		event_push.button_index = MOUSE_BUTTON_LEFT
-		if is_button_pressed:
-			event_push.button_mask = MOUSE_BUTTON_MASK_LEFT
+		event_push.button_mask = MOUSE_BUTTON_MASK_LEFT
 		event_push.pressed = is_button_pressed
 		event_push.position = new_pos
-		event_push.global_position = new_pos
-		viewport.push_input(event_push)
+		#event_push.global_position = new_pos
+		viewport.push_input(event_push, true)
 		
 	else:
 		
 		var event = InputEventMouseMotion.new()
-		event.screen_relative = new_pos - last_mouse_position
-		event.relative = new_pos - last_mouse_position
-		event.velocity = event.relative / (now - last_event)
+		#event.screen_relative = new_pos - last_mouse_position
+		#event.relative = new_pos - last_mouse_position
+		#event.velocity = event.relative / (now - last_event)
 		event.position = new_pos
-		event.global_position = new_pos
-		if is_button_pressed:
-			event.button_mask = MOUSE_BUTTON_MASK_LEFT
-		viewport.push_input(event)
+		#event.global_position = new_pos
+		event.button_mask = MOUSE_BUTTON_MASK_LEFT
+		#else:
+			#event.button_mask = 0
+		viewport.push_input(event, true)
+		#viewport.warp_mouse(new_pos)
 	last_event = now
 	last_mouse_position = new_pos
 	was_button_pressed = is_button_pressed

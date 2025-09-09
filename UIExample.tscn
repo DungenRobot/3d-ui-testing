@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://javlbfu5p4cs"]
+[gd_scene load_steps=3 format=3 uid="uid://javlbfu5p4cs"]
 
 [sub_resource type="GDScript" id="GDScript_11pbu"]
 script/source = "extends Control
@@ -7,6 +7,9 @@ script/source = "extends Control
 func _unhandled_key_input(event):
 	$Label.text += event.as_text_keycode()
 "
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_11pbu"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="UiExample" type="Control"]
 layout_mode = 3
@@ -23,8 +26,18 @@ offset_left = 44.0
 offset_top = 36.0
 offset_right = 676.0
 offset_bottom = 136.0
+theme_override_constants/caret_width = 15
 theme_override_font_sizes/font_size = 43
+theme_override_styles/focus = SubResource("StyleBoxFlat_11pbu")
 placeholder_text = "Example"
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+drag_and_drop_selection_enabled = false
+middle_mouse_paste_enabled = false
+empty_selection_clipboard_enabled = false
+caret_blink = true
+caret_multiple = false
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
